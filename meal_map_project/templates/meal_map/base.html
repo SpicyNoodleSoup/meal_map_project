@@ -1,0 +1,34 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        MealMap - 
+        {% block title %}
+
+        {% endblock %}
+    </title>
+    <!-- Link to CSS files -->
+    <!-- Link to JS files -->
+</head>
+<body>
+    <header>
+      
+
+    </header>
+
+    {% block content %}
+    <!-- This block will be overridden by child templates -->
+    {% endblock %}
+
+    <footer>
+        <!-- Footer content -->
+    </footer>
+
+    {% block scripts %}
+    <!-- Additional scripts can be added by child templates -->
+    {% endblock %}
+</body>
+</html>
