@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('restaurants/', RestaurantListView.as_view(), name='restaurant-list'),
-    path('restaurants/<int:pk>/', RestaurantDetailView.as_view(), name='restaurant-detail'),
+
+    path('meal-map/', include('meal_map.urls')), # maps any url starting with meal-map/ to be handled by meal_map
 ]

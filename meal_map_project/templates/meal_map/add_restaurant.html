@@ -1,0 +1,24 @@
+{% extends 'meal_map/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Add Restaurant
+{% endblock %}
+
+{% block content %}
+<h1>Add Restaurant</h1>
+<div>
+    <form id="restaurant_form" method="post" action="{% url 'meal_map:add_restaurant' %}">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{hidden}}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+            {{ field }}
+        {% endfor %}
+        <input type="submit" name="submit" value="Add Restaurant" />
+    </form>
+</div>
+{% endblock %}
