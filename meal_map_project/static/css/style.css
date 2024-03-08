@@ -22,6 +22,17 @@ body {
     z-index: 100;
 }
 
+.nav-links {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-links li a {
+    margin-left: 20px; /* space */
+    color: #fff; 
+}
+
+
 .navbar a {
     position: relative;
     font-size: 18px;

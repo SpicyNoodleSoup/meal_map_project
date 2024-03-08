@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 class Reviewer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reviewer")
@@ -44,3 +45,11 @@ class Review(models.Model):
 
     def __str__(self):
         return _("Review by {} on {}").format(self.reviewer, self.date)
+
+## URL + images
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+    def __str__(self):
+        return self.user.username
