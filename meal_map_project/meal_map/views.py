@@ -22,10 +22,6 @@ class RestaurantDetailView(DetailView):
     context_object_name = 'restaurant'
     
     
-def index(request):
-    response = render(request, 'meal_map/index.html')
-    return response
-    
 # Just the base html template, so i can see how it looks when im working on it - Luke
 def base(request):
     
