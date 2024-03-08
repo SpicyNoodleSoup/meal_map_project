@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from .models import Restaurant
-
 
 # This view is used to take all the restaurant objects in the database and
 # show it in a list formate
@@ -32,6 +33,10 @@ def base(request):
 def login(request):
     response = render(request, 'meal_map/login.html')
     return response
+
+@login_required
+def logout(request):
+    return HttpResponse("Logout to be implemented")
 
 def homepage(request):
     response = render(request, 'meal_map/homepage.html')
