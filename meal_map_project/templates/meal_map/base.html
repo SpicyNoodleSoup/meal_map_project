@@ -1,5 +1,7 @@
 <!-- base.html -->
 <!DOCTYPE html>
+
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,17 +13,33 @@
         {% endblock %}
     </title>
     <!-- Link to CSS files -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Link to JS files -->
 </head>
+
 <body>
-    <header>
-      
+    <div>
+    <header class="header">
+        <a href="/meal-map/homepage/" class="logo">
+            <img src="{% static 'images/logo.jpeg' %}" alt="Picture of logo" />
+        </a>
 
+        <nav class="navbar">
+            <a href="#">Other Button</a>
+            <a href="/meal-map/login">Log In</a>
+        </nav>
     </header>
+    </div>
 
-    {% block content %}
-    <!-- This block will be overridden by child templates -->
-    {% endblock %}
+    <div>
+    <main class="main-content">
+        {% block content %}
+        <!-- This block will be overridden by child templates -->
+        {% endblock %}
+        </div>
+
+    </main>
+    <div>
 
     <footer>
         <!-- Footer content -->
