@@ -33,3 +33,24 @@ def login(request):
 def homepage(request):
     response = render(request, 'meal_map/homepage.html')
     return response
+
+def my_account(request):
+    response = render(request, 'meal_map/account.html')
+    return response
+
+
+def add_restaurant(request):
+    response = render(request, 'meal_map/add_restaurant.html')
+    return response
+
+def my_reviews(request):
+    response = render(request, 'meal_map/my_reviews.html')
+    return response
+
+def register(request):
+    response = render(request, 'meal_map/register.html')
+    return response
+
+def restaurant(request):
+    response = render(request, 'meal_map/restaurant.html')
+    return response
