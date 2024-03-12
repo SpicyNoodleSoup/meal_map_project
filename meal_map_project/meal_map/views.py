@@ -5,8 +5,12 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 from .models import Restaurant
 from .forms import UserForm, UserProfileForm
+
+
 
 # This view is used to take all the restaurant objects in the database and
 # show it in a list formate
@@ -30,13 +34,29 @@ def base(request):
     return response
 
 
-def login(request):
-    response = render(request, 'meal_map/login.html')
-    return response
+def user_login(request):
+    # response = render(request, 'meal_map/login.html')
+    # return response
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse('meal_map:homepage'))
+            else:
+                return HttpResponse("Your Rango Meal Map is disabled.")
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'meal_map/login.html')
 
 @login_required
-def logout(request):
-    return HttpResponse("Logout to be implemented")
+def user_logout(request):
+    logout(request)
+    return redirect('meal_map:homepage')
 
 def homepage(request):
     response = render(request, 'meal_map/homepage.html')
@@ -72,9 +92,13 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             profile.save()
+
+            messages.success(request, 'Account created successfully! Please login.')
+            return redirect('/meal_map/login/')
             registered = True
         else:
-            print(user_form.errors, profile_form.errors)
+            messages.error(request, 'Registration failed. Please check the form.')
+
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()

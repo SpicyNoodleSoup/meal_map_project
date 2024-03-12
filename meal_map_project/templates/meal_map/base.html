@@ -25,9 +25,18 @@
         </a>
 
         <nav class="navbar">
-            <a href="#">Other Button</a>
-            <a href="/meal-map/login">Log In</a>
-            <a href="/meal-map/register">Sign Up</a>
+
+            <ul class="nav-links">
+                <a href="#">Other Button</a>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'meal_map:my_account' %}">Account</a></li>
+                    <li><a href="{% url 'meal_map:logout' %}">Sign Out</a></li>
+                {% else %}
+                    <li><a href="{% url 'meal_map:register' %}">Sign Up</a></li>
+                    <li><a href="{% url 'meal_map:login' %}">Sign In</a></li>
+                {% endif %}
+            </ul>
+
         </nav>
     </header>
     </div>
