@@ -5,10 +5,12 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 from .models import Restaurant
 from .forms import UserForm, UserProfileForm
-from django.http import HttpResponse
-from django.contrib import messages
+
+
 
 # This view is used to take all the restaurant objects in the database and
 # show it in a list formate
@@ -90,11 +92,13 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             profile.save()
+
             messages.success(request, 'Account created successfully! Please login.')
             return redirect('/meal_map/login/')
             registered = True
         else:
             messages.error(request, 'Registration failed. Please check the form.')
+
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
