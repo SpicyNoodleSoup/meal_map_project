@@ -1,5 +1,7 @@
 from django.urls import path
 from meal_map import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'meal_map'
 

@@ -59,8 +59,30 @@ def user_logout(request):
     return redirect('meal_map:homepage')
 
 def homepage(request):
-    response = render(request, 'meal_map/homepage.html')
-    return response
+    top_restaurants = Restaurant.objects.order_by('-rating')[:15]  # Get top 15 restaurants by rating
+    new_restaurants = Restaurant.objects.order_by('-id')[:15]
+
+    categories = ['Desserts', 'Bryans Steak', 'Vietnamese', 'Thai', 'Spanish', 'Soul Food', 'Seafood',
+                  'Sandwiches', 'Salad', 'Pizza', 'Mexican', 'Italian', 'Indian', 'Healthy Food', 'Greek',
+                  'German', 'French', 'Fast Food', 'Exotic', 'Ethiopian', 'European', 'Eastern European',
+                  'Diner', 'Cuban', 'Coffee and Tea', 'Chinese', 'Caribbean', 'Burgers', 'Breakfast',
+                  'Bar Food', 'Bakery', 'Barbeque']
+    
+    category_restaurants = {}
+    for category in categories:
+        restaurants = Restaurant.objects.filter(food_type__icontains=category).order_by('-rating')[:15]
+        category_restaurants[category] = restaurants
+    
+    context = {
+        'top_restaurants': top_restaurants,
+        'new_restaurants': new_restaurants,
+        'category_restaurants': category_restaurants,
+    }
+    
+    return render(request, 'meal_map/homepage.html', context)
+
+    #response = render(request, 'meal_map/homepage.html')
+    #return response
 
 def my_account(request):
     response = render(request, 'meal_map/account.html')

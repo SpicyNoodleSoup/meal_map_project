@@ -5,6 +5,7 @@ import django
 django.setup()
 from django.contrib.auth.models import User
 from meal_map.models import Restaurant, Review, RestaurantOwner, Reviewer
+from django.core.files.base import ContentFile
 
 def populate():
     # Users (Restaurant Owners and Reviewers)
@@ -30,16 +31,16 @@ def populate():
 
     # Restaurants
     restaurant_data = [
-        {"name": "The Pizza Place", "owner_username": "owner1", "description": "Best pizza in town.", "rating": 4, "food_type": "Italian", "location": "123 Main St"},
-        {"name": "Burger Joint", "owner_username": "owner2", "description": "Juicy burgers and crispy fries.", "rating": 4, "food_type": "American", "location": "456 Elm St"},
-        {"name": "Sushi Spot", "owner_username": "owner3", "description": "Fresh sushi and Japanese cuisine.", "rating": 5, "food_type": "Japanese", "location": "789 Oak Ave"},
-        {"name": "Taco City", "owner_username": "owner4", "description": "Authentic Mexican tacos and burritos.", "rating": 4, "food_type": "Mexican", "location": "321 Pine Rd"},
-        {"name": "Pasta Palace", "owner_username": "owner5", "description": "Homemade pasta dishes and Italian specialties.", "rating": 4, "food_type": "Italian", "location": "654 Cedar Blvd"},
-        {"name": "Steak House", "owner_username": "owner6", "description": "Juicy steaks and classic American fare.", "rating": 5, "food_type": "Steakhouse", "location": "987 Maple Ln"},
-        {"name": "Seafood Shack", "owner_username": "owner7", "description": "Fresh seafood and coastal cuisine.", "rating": 4, "food_type": "Seafood", "location": "246 Ocean Dr"},
-        {"name": "Thai Terrace", "owner_username": "owner8", "description": "Authentic Thai dishes and flavorful curries.", "rating": 5, "food_type": "Thai", "location": "135 Sunset Ave"},
-        {"name": "Greek Grill", "owner_username": "owner9", "description": "Traditional Greek recipes and Mediterranean flavors.", "rating": 4, "food_type": "Greek", "location": "864 Olive St"},
-        {"name": "Vegan Vibes", "owner_username": "owner10", "description": "Plant-based meals and healthy options.", "rating": 5, "food_type": "Vegan", "location": "579 Vine Rd"},
+        {"name": "The Pizza Place", "owner_username": "owner1", "description": "Best pizza in town.", "rating": 4, "food_type": "Italian", "location": "123 Main St", "image_filename": "pizza_place.jpg"},
+        {"name": "Burger Joint", "owner_username": "owner2", "description": "Juicy burgers and crispy fries.", "rating": 4, "food_type": "American", "location": "456 Elm St","image_filename": "burger_place.jpg"},
+        {"name": "Sushi Spot", "owner_username": "owner3", "description": "Fresh sushi and Japanese cuisine.", "rating": 5, "food_type": "Japanese", "location": "789 Oak Ave", "image_filename": "sushi_place.jpg"},
+        {"name": "Taco City", "owner_username": "owner4", "description": "Authentic Mexican tacos and burritos.", "rating": 4, "food_type": "Mexican", "location": "321 Pine Rd", "image_filename": "taco_place.jpg"},
+        {"name": "Pasta Palace", "owner_username": "owner5", "description": "Homemade pasta dishes and Italian specialties.", "rating": 4, "food_type": "Italian", "location": "654 Cedar Blvd", "image_filename": "pasta_place.jpg"},
+        {"name": "Steak House", "owner_username": "owner6", "description": "Juicy steaks and classic American fare.", "rating": 5, "food_type": "Steakhouse", "location": "987 Maple Ln", "image_filename": "steak_meal.jpg"},
+        {"name": "Seafood Shack", "owner_username": "owner7", "description": "Fresh seafood and coastal cuisine.", "rating": 4, "food_type": "Seafood", "location": "246 Ocean Dr", "image_filename": "seafood_meal.jpg"},
+        {"name": "Thai Terrace", "owner_username": "owner8", "description": "Authentic Thai dishes and flavorful curries.", "rating": 5, "food_type": "Thai", "location": "135 Sunset Ave", "image_filename": "tai_place.jpg"},
+        {"name": "Greek Grill", "owner_username": "owner9", "description": "Traditional Greek recipes and Mediterranean flavors.", "rating": 4, "food_type": "Greek", "location": "864 Olive St", "image_filename": "greek_place.jpg"},
+        {"name": "Vegan Vibes", "owner_username": "owner10", "description": "Plant-based meals and healthy options.", "rating": 5, "food_type": "Vegan", "location": "579 Vine Rd", "image_filename": "vegan_place.jpg"},
     ]
 
     restaurants = {rd["name"]: add_restaurant(**rd, users=users) for rd in restaurant_data}
@@ -83,7 +84,7 @@ def add_user(username, email, password):
         user.save()
     return user
 
-def add_restaurant(name, owner_username, description, rating, food_type, location, users):
+def add_restaurant(name, owner_username, description, rating, food_type, location, users, image_filename):
     owner_user = users[owner_username]
     owner, _ = RestaurantOwner.objects.get_or_create(user=owner_user)
     restaurant, _ = Restaurant.objects.get_or_create(
@@ -96,6 +97,13 @@ def add_restaurant(name, owner_username, description, rating, food_type, locatio
             'location': location,
         }
     )
+
+    if image_filename:
+        with open(f"media/restaurant_photos/{image_filename}", "rb") as f:
+            content = f.read()
+        restaurant.photo.save(image_filename, ContentFile(content), save=False)
+        restaurant.save()
+
     return restaurant
 
 def add_review(text, rating, restaurant_name, reviewer_username, users, restaurants):

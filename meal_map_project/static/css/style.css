@@ -179,3 +179,57 @@ body {
 .login-container input[type="submit"]:hover {
     background-color: #45a049;
 }
+
+.homepage-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.restaurant-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.restaurant-item {
+    width: calc(33.33% - 10px);
+    margin-bottom: 20px;
+}
+
+.restaurant-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.restaurant-item h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.restaurant-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+.restaurant-item {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 20px;
+}
+
+.restaurant-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+body {
+    background-color: #fdcfde; /* A shade of pink */
+}

@@ -1,13 +1,51 @@
 {% extends 'meal_map/base.html' %}
-{% load staticfiles %}
-
-{% block title %}
-    Homepage
-{% endblock %}
-
+{% load static %}
 
 {% block content %}
+<div class="homepage-container">
+    <h2>Top Restaurants</h2>
+    <div class="restaurant-list">
+        {% for restaurant in top_restaurants %}
+        <div class="restaurant-item">
+            {% if restaurant.photo %}
+            <img src="{{ restaurant.photo.url }}" alt="{{ restaurant.name }}">
+            {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
+            {% endif %}
+            <h3>{{ restaurant.name }}</h3>
+        </div>
+        {% endfor %}
+    </div>
 
-Still to do...
+    <h2>New Restaurants</h2>
+    <div class="restaurant-list">
+        {% for restaurant in new_restaurants %}
+        <div class="restaurant-item">
+            {% if restaurant.photo %}
+            <img src="{{ restaurant.photo.url }}" alt="{{ restaurant.name }}">
+            {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
+            {% endif %}
+            <h3>{{ restaurant.name }}</h3>
+        </div>
+        {% endfor %}
+    </div>
 
+    <h2>Discover</h2>
+    {% for category, restaurants in category_restaurants.items %}
+    <h3>{{ category }}</h3>
+    <div class="restaurant-list">
+        {% for restaurant in restaurants %}
+        <div class="restaurant-item">
+            {% if restaurant.photo %}
+            <img src="{{ restaurant.photo.url }}" alt="{{ restaurant.name }}">
+            {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
+            {% endif %}
+            <h3>{{ restaurant.name }}</h3>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
