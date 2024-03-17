@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.contrib.auth.models import User
 from .models import Restaurant
 from .forms import UserForm, UserProfileForm
 
@@ -98,38 +98,39 @@ def my_reviews(request):
     return response
 
 def register(request):
-    registered = False
-
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-            profile.save()
-
-            messages.success(request, 'Account created successfully! Please login.')
-            return redirect('/meal_map/login/')
-            registered = True
-        else:
-            messages.error(request, 'Registration failed. Please check the form.')
-
+        if User.objects.filter(username=username).exists():
+            return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
+        
+        user = User.objects.create_user(username=username, email=email, password=password)
+        
+        login(request, user)
+        
+        return redirect('meal_map:homepage')
     else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
+        return render(request, 'meal_map/register.html')
     
-    return render(request,
-        'meal_map/register.html',
-         context = {'user_form': user_form,
-        'profile_form': profile_form,
-        'registered': registered})
+def restaurant_register(request):
+    if request.method == 'POST':
+        restaurant_name = request.POST['restaurantName']
+        owner_name = request.POST['ownerName']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        if User.objects.filter(username=owner_name).exists():
+            return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
+    
+        user = User.objects.create_user(username=owner_name, email=email, password=password)
+
+        login(request, user)
+        
+        return redirect('meal_map:homepage')
+    else:
+        return render(request, 'meal_map/restaurant_register.html')
 
 def restaurant(request):
     response = render(request, 'meal_map/restaurant.html')

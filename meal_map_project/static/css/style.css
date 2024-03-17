@@ -233,3 +233,18 @@ body {
 body {
     background-color: #fdcfde; /* A shade of pink */
 }
+
+.registration-success {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px; 
+    color: #ff1493; 
+    font-weight: bold; 
+}
+
+#formContainer .form-field label {
+    display: block; /* 使标签以块级元素显示，每个标签单独占据一行 */
+    margin-bottom: 5px; /* 添加一些底部间距，使标签与下面的输入框分隔开 */
+    font-weight: bold; /* 加粗标签文本 */
+    color: #333; /* 设置标签文本颜色 */
+}
