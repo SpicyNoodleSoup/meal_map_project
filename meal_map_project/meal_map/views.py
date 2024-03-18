@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Restaurant
+from .models import Restaurant, Review
 from .forms import UserForm, UserProfileForm
 
 
@@ -132,6 +132,19 @@ def restaurant_register(request):
     else:
         return render(request, 'meal_map/restaurant_register.html')
 
-def restaurant(request):
-    response = render(request, 'meal_map/restaurant.html')
-    return response
+def restaurant(request, restaurant_name_slug):
+    context_dict = {}
+    
+    try:
+        restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
+        reviews = Review.objects.get(restaurant = restaurant)
+        
+        context_dict['restaurant'] = restaurant
+        context_dict['reviews'] = reviews
+    except Restaurant.DoesNotExist:
+        context_dict['restaurant'] = None
+        context_dict['reviews'] = None
+        
+    return render(request, 'meal_map/restaurant.html', context=context_dict)
+        
+        

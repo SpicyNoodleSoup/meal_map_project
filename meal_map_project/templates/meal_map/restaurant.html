@@ -2,11 +2,54 @@
 {% load staticfiles %}
 
 {% block title %}
-    Name of Restaurant
+    {% if restaruant %}
+        {{restaurant.name}}
+    {% else %}
+        Unknown Restaruant
+    {% endif %}
 {% endblock %}
 
 {% block content%}
-    All the restaruant stuff to come!!
+    {% if restaruant %}
+
+        <header>
+            <h1>{{ restaruant.name }}</h1> </br>
+            <div id="description-container">
+                {{ restaurant.description }}
+            <div>
+        </header>
+        <div id="add-review-section">
+            <button id="toggleAddReview">Add Review</button>
+        </div>
+
+        <div id="reviewsContainer">
+            {%if reviews%}
+                {% for review in reviews %}
+                    <div class="review">
+                        {{review.reviewer}}
+                        {{review.rating}}
+                        {{review.review_text}}
+                    </div>
+
+        </div> 
+
+        <aside>
+
+            <div id= "restaurant-photo-container">
+                {{ restaurant.photo }}
+            </div>
+
+            <section class="contact">
+                <h2>Contact</h2>
+                <p>Location: {{restaurant.location}}</p>
+                <p>Tel: {{restaurant.phone_number }}</p>
+            </section>
+            <section class="hours">
+                <h2>Opening Hours</h2>
+                {{ restaruant.opening_hours}}
+            </section>
+        </aside>
+
 {% endblock %}
 
 
