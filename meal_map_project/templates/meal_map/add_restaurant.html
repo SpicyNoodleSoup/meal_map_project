@@ -6,17 +6,22 @@
 {% endblock %}
 
 {% block content %}
-<h1>Add Restaurant</h1>
-<div>
-    <form id="restaurant_form" method="post" action="{% url 'meal_map:add_restaurant' %}">
+<div class="add_restaurant-container">
+    <h1>Add Restaurant</h1>
+    <form id="restaurant_form" method="post" action="{% url 'meal_map:add_restaurant' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
-            {{hidden}}
+            {{ hidden }}
         {% endfor %}
         {% for field in form.visible_fields %}
-            {{ field.errors }}
-            {{ field.help_text }}
-            {{ field }}
+            <div class="form-group{% if field.errors %} has-error{% endif %}">
+               
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="help-block">{{ field.help_text }}</p>
+                {% endif %}
+                {{ field.errors }}
+            </div>
         {% endfor %}
         <input type="submit" name="submit" value="Add Restaurant" />
     </form>
