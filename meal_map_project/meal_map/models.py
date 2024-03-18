@@ -4,6 +4,10 @@ from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
+from django.core.validators import RegexValidator
+
+numeric = RegexValidator(r'^[0-9]+$', 'Only numeric characters are allowed.')
+
 class Reviewer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reviewer")
     profile_picture = models.ImageField(upload_to="reviewer_pics")
@@ -24,13 +28,13 @@ class RestaurantOwner(models.Model):
 class Restaurant(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
-    phone_number = models.CharField(max_length=32)
+    phone_number = models.CharField(validators =[numeric], max_length=32)
     opening_hours = models.CharField(max_length=128)
     website = models.URLField(max_length=128)
-    rating = models.SmallIntegerField()
+    rating = models.SmallIntegerField(default = 0)
     food_type = models.CharField(max_length=128)
     location = models.CharField(max_length=128)
-    photo = models.ImageField(upload_to="restaurant_photos")
+    photo = models.ImageField(upload_to="restaurant_photos/")
     owner = models.OneToOneField(RestaurantOwner, on_delete=models.CASCADE, related_name='restaurant')
 
     def __str__(self):

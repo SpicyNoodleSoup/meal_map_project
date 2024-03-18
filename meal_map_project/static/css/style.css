@@ -139,6 +139,60 @@ body {
     background-color: #45a049;
 }
 
+.add_restaurant-container h1{
+    text-align: center;
+}
+
+/* This centers the form on the page and gives it a width */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* This ensures that your form is always centered vertically */
+}
+
+/* This styles the form itself */
+form {
+    width: 300px; /* Or whatever width you prefer */
+    margin: auto;
+    padding: 20px;
+
+}
+
+/* This styles each input field */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+    width: 100%; /* Makes the input take up the full width of the form */
+    padding: 10px;
+    margin-bottom: 15px; /* Adds space below each input */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fdfdd0;
+}
+
+/* This styles the submit button */
+input[type="submit"],
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* This is a green color, you can choose what you prefer */
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #45a049;
+}
+
+
 /* ... (previous CSS code) ... */
 
 .login-container {

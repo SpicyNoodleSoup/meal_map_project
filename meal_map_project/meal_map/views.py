@@ -7,8 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Restaurant
-from .forms import UserForm, UserProfileForm
+from .models import Restaurant, RestaurantOwner
+from .forms import UserForm, UserProfileForm, AddRestaurantForm
 
 
 
@@ -81,17 +81,31 @@ def homepage(request):
     
     return render(request, 'meal_map/homepage.html', context)
 
-    #response = render(request, 'meal_map/homepage.html')
-    #return response
-
 def my_account(request):
     response = render(request, 'meal_map/account.html')
     return response
 
-
+@login_required
 def add_restaurant(request):
-    response = render(request, 'meal_map/add_restaurant.html')
-    return response
+    form = AddRestaurantForm()
+    if request.method == 'POST':
+        form = AddRestaurantForm(request.POST, request.FILES)
+        if form.is_valid():
+            restaurant = form.save(commit=False)
+            try:
+                restaurant_owner_profile = request.user.restaurant_owner
+                restaurant.owner = restaurant_owner_profile
+                restaurant.save()
+                return redirect('meal_map:homepage')
+            except RestaurantOwner.DoesNotExist:
+                form.add_error(None, "Current user does not have a restaurant owner profile.")
+
+            return redirect('meal_map:homepage')
+        else:
+            print(form.errors)
+            
+    return render(request,'meal_map/add_restaurant.html', {'form':form})
+    
 
 def my_reviews(request):
     response = render(request, 'meal_map/my_reviews.html')
