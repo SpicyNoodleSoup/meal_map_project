@@ -6,9 +6,10 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
-from .models import Restaurant
-from .forms import UserForm, UserProfileForm
+from django.contrib.auth.models import User
+from django.utils import timezone
+from .models import Restaurant, RestaurantOwner, Review, Reviewer
+from .forms import UserForm, UserProfileForm, AddRestaurantForm, AddReviewForm
 
 
 
@@ -59,56 +60,121 @@ def user_logout(request):
     return redirect('meal_map:homepage')
 
 def homepage(request):
-    response = render(request, 'meal_map/homepage.html')
-    return response
+    top_restaurants = Restaurant.objects.order_by('-rating')[:15]  # Get top 15 restaurants by rating
+    new_restaurants = Restaurant.objects.order_by('-id')[:15]
+
+    categories = ['Desserts', 'Bryans Steak', 'Vietnamese', 'Thai', 'Spanish', 'Soul Food', 'Seafood',
+                  'Sandwiches', 'Salad', 'Pizza', 'Mexican', 'Italian', 'Indian', 'Healthy Food', 'Greek',
+                  'German', 'French', 'Fast Food', 'Exotic', 'Ethiopian', 'European', 'Eastern European',
+                  'Diner', 'Cuban', 'Coffee and Tea', 'Chinese', 'Caribbean', 'Burgers', 'Breakfast',
+                  'Bar Food', 'Bakery', 'Barbeque']
+    
+    category_restaurants = {}
+    for category in categories:
+        restaurants = Restaurant.objects.filter(food_type__icontains=category).order_by('-rating')[:15]
+        category_restaurants[category] = restaurants
+    
+    context = {
+        'top_restaurants': top_restaurants,
+        'new_restaurants': new_restaurants,
+        'category_restaurants': category_restaurants,
+    }
+    
+    return render(request, 'meal_map/homepage.html', context)
 
 def my_account(request):
     response = render(request, 'meal_map/account.html')
     return response
 
-
+@login_required
 def add_restaurant(request):
-    response = render(request, 'meal_map/add_restaurant.html')
-    return response
+    form = AddRestaurantForm()
+    if request.method == 'POST':
+        form = AddRestaurantForm(request.POST, request.FILES)
+        if form.is_valid():
+            restaurant = form.save(commit=False)
+            try:
+                restaurant_owner_profile = request.user.restaurant_owner
+                restaurant.owner = restaurant_owner_profile
+                restaurant.save()
+                return redirect('meal_map:homepage')
+            except RestaurantOwner.DoesNotExist:
+                form.add_error(None, "Current user does not have a restaurant owner profile.")
+
+            return redirect('meal_map:homepage')
+        else:
+            print(form.errors)
+            
+    return render(request,'meal_map/add_restaurant.html', {'form':form})
+    
 
 def my_reviews(request):
     response = render(request, 'meal_map/my_reviews.html')
     return response
 
 def register(request):
-    registered = False
-
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-            profile.save()
-
-            messages.success(request, 'Account created successfully! Please login.')
-            return redirect('/meal_map/login/')
-            registered = True
-        else:
-            messages.error(request, 'Registration failed. Please check the form.')
-
+        if User.objects.filter(username=username).exists():
+            return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
+        
+        user = User.objects.create_user(username=username, email=email, password=password)
+        
+        login(request, user)
+        
+        return redirect('meal_map:homepage')
     else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
+        return render(request, 'meal_map/register.html')
     
-    return render(request,
-        'meal_map/register.html',
-         context = {'user_form': user_form,
-        'profile_form': profile_form,
-        'registered': registered})
+def restaurant_register(request):
+    if request.method == 'POST':
+        restaurant_name = request.POST['restaurantName']
+        owner_name = request.POST['ownerName']
+        email = request.POST['email']
+        password = request.POST['password']
 
-def restaurant(request):
-    response = render(request, 'meal_map/restaurant.html')
-    return response
+        if User.objects.filter(username=owner_name).exists():
+            return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
+    
+        user = User.objects.create_user(username=owner_name, email=email, password=password)
+
+        login(request, user)
+        
+        return redirect('meal_map:homepage')
+    else:
+        return render(request, 'meal_map/restaurant_register.html')
+
+def restaurant(request, restaurant_name_slug):
+    context_dict = {}
+        
+    try:
+        restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
+        reviews = Review.objects.filter(restaurant = restaurant)
+        
+        if request.method == 'POST':
+            review_form = AddReviewForm(request.POST)
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.restaurant = restaurant
+                review.reviewer = Reviewer.objects.get(user=request.user)
+                review.date = timezone.now()
+                review.save()
+                return redirect('restaurant', restaurant_name_slug=restaurant.slug)
+            
+        else:
+            review_form = AddReviewForm()
+        
+        context_dict['restaurant'] = restaurant
+        context_dict['reviews'] = reviews
+        context_dict['review_form'] = review_form
+    except Restaurant.DoesNotExist:
+        context_dict['restaurant'] = None
+        context_dict['reviews'] = None
+        context_dict['review_form'] = AddReviewForm()
+        
+    return render(request, 'meal_map/restaurant.html', context=context_dict)
+        
+        

@@ -1,5 +1,7 @@
 from django.urls import path
 from meal_map import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'meal_map'
 
@@ -16,6 +18,7 @@ urlpatterns = [
     path('my-account/', views.my_account, name ='my_account'),
     path('my-account/add-restaurant/', views.add_restaurant, name ='add_restaurant'),
     path('my-account/my-reviews/', views.my_reviews, name ='my_reviews'),
+    path('restaurant/register/', views.restaurant_register, name='restaurant_register'),
     
-    path('restaurant/<slug:restaurant_name_slug>', views.restaurant, name = 'show_restaurant')
-]
+    path('restaurant/<slug:restaurant_name_slug>/', views.restaurant, name = 'show_restaurant')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

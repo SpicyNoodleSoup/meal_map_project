@@ -17,9 +17,21 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from meal_map import views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import path, include
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
     path('admin/', admin.site.urls),
+    path('', include('meal_map.urls')),
     path('meal-map/', include('meal_map.urls')), # maps any url starting with meal-map/ to be handled by meal_map
+
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    
