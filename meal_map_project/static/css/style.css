@@ -3,10 +3,16 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
+    
 };
+
+html {
+    background-color: #fdcfde; 
+}
 
 body {
     min-height: 100vh;
+    background-color: #fdcfde; 
 }
 
 .header {
@@ -139,7 +145,60 @@ body {
     background-color: #45a049;
 }
 
-/* ... (previous CSS code) ... */
+.add_restaurant-container h1{
+    text-align: center;
+}
+
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* This ensures that your form is always centered vertically */
+}
+
+/* This styles the form itself */
+form {
+    width: 300px; 
+    margin: auto;
+    padding: 20px;
+
+}
+
+/* This styles each input field */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+textarea,
+select {
+    width: 100%; /* Makes the input take up the full width of the form */
+    padding: 10px;
+    margin-bottom: 15px; /* Adds space below each input */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fdfdd0;
+}
+
+/* This styles the submit button */
+input[type="submit"],
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; 
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #45a049;
+}
+
 
 .login-container {
     max-width: 400px;
@@ -230,9 +289,6 @@ body {
     border-radius: 4px;
 }
 
-body {
-    background-color: #fdcfde; /* A shade of pink */
-}
 
 .registration-success {
     text-align: center;
@@ -248,3 +304,78 @@ body {
     font-weight: bold; /* 加粗标签文本 */
     color: #333; /* 设置标签文本颜色 */
 }
+
+/* restaurant page */
+
+#add-review-section {
+    display:none
+}
+
+#restaurant-container header {
+    text-align: center;
+}
+
+#restaurant-container header h1 {
+    text-align: center;
+    font-size: 80px;
+}
+
+#restaurant-container {
+    display: flex; /* This will place all children in a row */
+    justify-content: space-between; /* This will add space between your main content and sidebar */
+    margin: auto; /* Centers the container */
+    max-width: 1200px; /* Or the maximum width you desire */
+    
+    
+}
+
+#description-container {
+    background-color: #fdfdd0;
+}
+
+#restaurant-container button {
+
+    width:auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; 
+    color: white;
+    cursor: pointer;
+}
+
+
+
+.main-content {
+    flex-grow: 1; /* This will make main content grow to fill the space */
+    margin-right: 20px; /* Add some margin between main content and sidebar */
+    background-color: #fdcfde; 
+}
+
+.sidebar {
+    width: 200px; /* Adjust width of the sidebar */
+    padding-top: 100px;
+    /* Add other styling as needed */
+}
+
+#restaurant-photo-container img {
+    height: 250px;
+    width: 400px;
+}
+
+#add-review-section #add_review_form{
+    background-color: lightblue;
+}
+
+
+#add-review-section form {
+    background-color: lightblue;
+}
+
+
+
+.review {
+    background-color: white;
+}
+
+

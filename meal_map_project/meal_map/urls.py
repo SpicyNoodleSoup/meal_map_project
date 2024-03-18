@@ -20,5 +20,5 @@ urlpatterns = [
     path('my-account/my-reviews/', views.my_reviews, name ='my_reviews'),
     path('restaurant/register/', views.restaurant_register, name='restaurant_register'),
     
-    path('restaurant/<slug:restaurant_name_slug>', views.restaurant, name = 'show_restaurant')
-]
+    path('restaurant/<slug:restaurant_name_slug>/', views.restaurant, name = 'show_restaurant')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

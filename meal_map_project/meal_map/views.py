@@ -7,8 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Restaurant, Review
-from .forms import UserForm, UserProfileForm
+from django.utils import timezone
+from .models import Restaurant, RestaurantOwner, Review, Reviewer
+from .forms import UserForm, UserProfileForm, AddRestaurantForm, AddReviewForm
 
 
 
@@ -81,17 +82,31 @@ def homepage(request):
     
     return render(request, 'meal_map/homepage.html', context)
 
-    #response = render(request, 'meal_map/homepage.html')
-    #return response
-
 def my_account(request):
     response = render(request, 'meal_map/account.html')
     return response
 
-
+@login_required
 def add_restaurant(request):
-    response = render(request, 'meal_map/add_restaurant.html')
-    return response
+    form = AddRestaurantForm()
+    if request.method == 'POST':
+        form = AddRestaurantForm(request.POST, request.FILES)
+        if form.is_valid():
+            restaurant = form.save(commit=False)
+            try:
+                restaurant_owner_profile = request.user.restaurant_owner
+                restaurant.owner = restaurant_owner_profile
+                restaurant.save()
+                return redirect('meal_map:homepage')
+            except RestaurantOwner.DoesNotExist:
+                form.add_error(None, "Current user does not have a restaurant owner profile.")
+
+            return redirect('meal_map:homepage')
+        else:
+            print(form.errors)
+            
+    return render(request,'meal_map/add_restaurant.html', {'form':form})
+    
 
 def my_reviews(request):
     response = render(request, 'meal_map/my_reviews.html')
@@ -134,16 +149,31 @@ def restaurant_register(request):
 
 def restaurant(request, restaurant_name_slug):
     context_dict = {}
-    
+        
     try:
         restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
-        reviews = Review.objects.get(restaurant = restaurant)
+        reviews = Review.objects.filter(restaurant = restaurant)
+        
+        if request.method == 'POST':
+            review_form = AddReviewForm(request.POST)
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.restaurant = restaurant
+                review.reviewer = Reviewer.objects.get(user=request.user)
+                review.date = timezone.now()
+                review.save()
+                return redirect('restaurant', restaurant_name_slug=restaurant.slug)
+            
+        else:
+            review_form = AddReviewForm()
         
         context_dict['restaurant'] = restaurant
         context_dict['reviews'] = reviews
+        context_dict['review_form'] = review_form
     except Restaurant.DoesNotExist:
         context_dict['restaurant'] = None
         context_dict['reviews'] = None
+        context_dict['review_form'] = AddReviewForm()
         
     return render(request, 'meal_map/restaurant.html', context=context_dict)
         

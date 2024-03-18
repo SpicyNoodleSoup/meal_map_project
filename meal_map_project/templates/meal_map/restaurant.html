@@ -2,41 +2,77 @@
 {% load staticfiles %}
 
 {% block title %}
-    {% if restaruant %}
+    {% if restaurant %}
         {{restaurant.name}}
     {% else %}
-        Unknown Restaruant
+        Unknown Restaurant
     {% endif %}
 {% endblock %}
 
 {% block content%}
-    {% if restaruant %}
 
-        <header>
-            <h1>{{ restaruant.name }}</h1> </br>
-            <div id="description-container">
-                {{ restaurant.description }}
-            <div>
-        </header>
-        <div id="add-review-section">
-            <button id="toggleAddReview">Add Review</button>
-        </div>
+    <div id = "restaurant-container">
+        {% if restaurant %}
+        
+        
+        <main class="main-content">
+            <header>
+                <strong><h1>{{ restaurant.name }}</h1></strong> </br>
+                <div id="description-container">
+                    {{ restaurant.description }}
+                <div>
+            </header>
+            {% if user.is_authenticated%}
+                <button id="toggle_add_review">Add Review</button>
+                <div id="add-review-section" style="display:none;">
+                    <form id="add_review_form" method="post" action="{% url 'meal_map:show_restaurant' restaurant_name_slug=restaurant.slug %}">
+                        {% csrf_token %}
 
-        <div id="reviewsContainer">
-            {%if reviews%}
-                {% for review in reviews %}
-                    <div class="review">
-                        {{review.reviewer}}
-                        {{review.rating}}
-                        {{review.review_text}}
-                    </div>
+                        {% for hidden in review_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
 
-        </div> 
+                        <div class="form-group{% if field.errors %} has-error{% endif %}">
+                            {% for field in review_form.visible_fields %}
+                        
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <p class="help-block">{{ field.help_text }}</p>
+                                {% endif %}
+                                {{ field.errors }}
+                            {% endfor %}
+                        </div>
+                        <input type="submit" name="submit" value="Submit Review" />
+                    </form>
+                </div>
 
-        <aside>
+            {% else %}
+                <p> You must be <a href="{% url 'meal_map:login' %}">logged in to leave a review.</a> </p>
+
+            {% endif %}
+
+        <h2>Reviews</h2>
+            <div id="reviewsContainer">
+                {%if reviews%}
+                ------ </br>
+                    {% for review in reviews %}
+                        <div class="review">
+                            
+                            User: {{review.reviewer}} </br>
+                            Rating: {{review.rating}} </br>
+                            {{review.review_text}} </br>
+                            ------
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div> 
+        </main>
+
+        <aside class ="sidebar">
 
             <div id= "restaurant-photo-container">
-                {{ restaurant.photo }}
+                <img src = "{{ restaurant.photo.url }}" alt="Restaurant Picture">
             </div>
 
             <section class="contact">
@@ -46,10 +82,37 @@
             </section>
             <section class="hours">
                 <h2>Opening Hours</h2>
-                {{ restaruant.opening_hours}}
+                {{ restaurant.opening_hours}}
             </section>
         </aside>
 
-{% endblock %}
+        {%else%}
+            The restaurant does not exist.
+        {% endif%}
+
+
+        {% endblock %}
+    </div>
+
+    {%block scripts%}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var button = document.getElementById('toggle_add_review');
+                var formContainer = document.getElementById('add-review-section');
+
+                button.addEventListener('click', function() {
+                    // This toggles the display CSS property between none and block
+                    if (formContainer.style.display === 'none') {
+                        formContainer.style.display = 'block';
+                    } else {
+                        formContainer.style.display = 'none';
+                    }
+                });
+            });
+    </script>
+
+{%endblock%}
+
+
 
 
