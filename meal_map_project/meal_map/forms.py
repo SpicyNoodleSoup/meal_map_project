@@ -40,6 +40,15 @@ class AddReviewForm(forms.ModelForm):
         widgets = {'rating': forms.NumberInput(attrs={'placeholder': 'Rating out of 5'}),
                    'review_text': forms.Textarea(attrs={'placeholder': 'Tell us what you thought!'}),
                    }
-        
-        
+    
+    def __init__(self, *args, **kwargs):
+        self.reviewer = kwargs.pop('reviewer', None)
+        super().__init__(*args, **kwargs)
+    
+    def save(self, commit=True):
+        review = super().save(commit=False)
+        review.reviewer = self.reviewer
+        if commit:
+            review.save()
+        return review    
     
