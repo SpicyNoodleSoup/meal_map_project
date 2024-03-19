@@ -254,14 +254,46 @@ button:hover {
 
 .restaurant-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #ffb1e1 #f5d5e0;
+}
+
+.restaurant-list::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.restaurant-list::-webkit-scrollbar-track {
+    background-color: #f5d5e0;
+    border-radius: 4px;
+}
+
+.restaurant-list::-webkit-scrollbar-thumb {
+    background-color: #973091;
+    border-radius: 4px;
+}
+
+.restaurant-list::-webkit-scrollbar-thumb:hover {
+    background-color: #ab54a2;
 }
 
 .restaurant-item {
     width: calc(33.33% - 10px);
     margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restaurant-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.restaurant-item:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .restaurant-item a {
@@ -403,4 +435,68 @@ button:hover {
 
 #rating-container {
     background-color: #fdfdd0;
+}
+
+.section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #ff9db5 !important; /* Darker shade of pink */
+    border-radius: 8px;
+}
+
+.category {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffb6c1 !important; /* Slightly lighter shade of pink */
+    border-radius: 8px;
+}
+
+
+
+
+.section h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.category {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffb6c1; /* Slightly lighter shade of pink */
+    border-radius: 8px;
+}
+
+.category h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.restaurant-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+.restaurant-item {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 20px;
+    background-color: #fff; /* White background for restaurant items */
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.restaurant-item h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333;
 }
