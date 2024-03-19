@@ -382,8 +382,8 @@ button:hover {
 }
 
 #restaurant-photo-container img {
-    height: 250px;
-    width: 400px;
+    height: 180px;
+    width: 320px;
 }
 
 #add-review-section #add_review_form {
