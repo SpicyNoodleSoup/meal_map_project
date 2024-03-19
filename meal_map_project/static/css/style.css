@@ -3,16 +3,18 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-    
-};
+
+}
+
+;
 
 html {
-    background-color: #fdcfde; 
+    background-color: #fdcfde;
 }
 
 body {
     min-height: 100vh;
-    background-color: #fdcfde; 
+    background-color: #fdcfde;
 }
 
 .header {
@@ -34,8 +36,9 @@ body {
 }
 
 .nav-links li a {
-    margin-left: 20px; /* space */
-    color: #fff; 
+    margin-left: 20px;
+    /* space */
+    color: #fff;
 }
 
 
@@ -69,7 +72,8 @@ body {
 }
 
 .main-content {
-    margin-top: 120px; /* Adjust this value to the height of your header */
+    margin-top: 120px;
+    /* Adjust this value to the height of your header */
 }
 
 /* ... (previous CSS code) ... */
@@ -145,7 +149,7 @@ body {
     background-color: #45a049;
 }
 
-.add_restaurant-container h1{
+.add_restaurant-container h1 {
     text-align: center;
 }
 
@@ -154,12 +158,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* This ensures that your form is always centered vertically */
+    min-height: 100vh;
+    /* This ensures that your form is always centered vertically */
 }
 
 /* This styles the form itself */
 form {
-    width: 300px; 
+    width: 300px;
     margin: auto;
     padding: 20px;
 
@@ -174,9 +179,11 @@ input[type="url"],
 input[type="number"],
 textarea,
 select {
-    width: 100%; /* Makes the input take up the full width of the form */
+    width: 100%;
+    /* Makes the input take up the full width of the form */
     padding: 10px;
-    margin-bottom: 15px; /* Adds space below each input */
+    margin-bottom: 15px;
+    /* Adds space below each input */
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fdfdd0;
@@ -189,7 +196,7 @@ button {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
@@ -247,14 +254,51 @@ button:hover {
 
 .restaurant-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #ffb1e1 #f5d5e0;
+}
+
+.restaurant-list::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.restaurant-list::-webkit-scrollbar-track {
+    background-color: #f5d5e0;
+    border-radius: 4px;
+}
+
+.restaurant-list::-webkit-scrollbar-thumb {
+    background-color: #973091;
+    border-radius: 4px;
+}
+
+.restaurant-list::-webkit-scrollbar-thumb:hover {
+    background-color: #ab54a2;
 }
 
 .restaurant-item {
     width: calc(33.33% - 10px);
     margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restaurant-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.restaurant-item:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.restaurant-item a {
+    text-decoration: none;
+    color: #333;
 }
 
 .restaurant-item img {
@@ -293,22 +337,26 @@ button:hover {
 .registration-success {
     text-align: center;
     margin-top: 20px;
-    font-size: 20px; 
-    color: #ff1493; 
-    font-weight: bold; 
+    font-size: 20px;
+    color: #ff1493;
+    font-weight: bold;
 }
 
 #formContainer .form-field label {
-    display: block; /* 使标签以块级元素显示，每个标签单独占据一行 */
-    margin-bottom: 5px; /* 添加一些底部间距，使标签与下面的输入框分隔开 */
-    font-weight: bold; /* 加粗标签文本 */
-    color: #333; /* 设置标签文本颜色 */
+    display: block;
+    /* 使标签以块级元素显示，每个标签单独占据一行 */
+    margin-bottom: 5px;
+    /* 添加一些底部间距，使标签与下面的输入框分隔开 */
+    font-weight: bold;
+    /* 加粗标签文本 */
+    color: #333;
+    /* 设置标签文本颜色 */
 }
 
 /* restaurant page */
 
 #add-review-section {
-    display:none
+    display: none
 }
 
 #restaurant-container header {
@@ -321,12 +369,16 @@ button:hover {
 }
 
 #restaurant-container {
-    display: flex; /* This will place all children in a row */
-    justify-content: space-between; /* This will add space between your main content and sidebar */
-    margin: auto; /* Centers the container */
-    max-width: 1200px; /* Or the maximum width you desire */
-    
-    
+    display: flex;
+    /* This will place all children in a row */
+    justify-content: space-between;
+    /* This will add space between your main content and sidebar */
+    margin: auto;
+    /* Centers the container */
+    max-width: 1200px;
+    /* Or the maximum width you desire */
+
+
 }
 
 #description-container {
@@ -335,11 +387,11 @@ button:hover {
 
 #restaurant-container button {
 
-    width:auto;
+    width: auto;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
@@ -347,23 +399,26 @@ button:hover {
 
 
 .main-content {
-    flex-grow: 1; /* This will make main content grow to fill the space */
-    margin-right: 20px; /* Add some margin between main content and sidebar */
-    background-color: #fdcfde; 
+    flex-grow: 1;
+    /* This will make main content grow to fill the space */
+    margin-right: 20px;
+    /* Add some margin between main content and sidebar */
+    background-color: #fdcfde;
 }
 
 .sidebar {
-    width: 200px; /* Adjust width of the sidebar */
+    width: 200px;
+    /* Adjust width of the sidebar */
     padding-top: 100px;
     /* Add other styling as needed */
 }
 
 #restaurant-photo-container img {
-    height: 250px;
-    width: 400px;
+    height: 180px;
+    width: 320px;
 }
 
-#add-review-section #add_review_form{
+#add-review-section #add_review_form {
     background-color: lightblue;
 }
 
@@ -378,4 +433,70 @@ button:hover {
     background-color: white;
 }
 
+#rating-container {
+    background-color: #fdfdd0;
+}
 
+.section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #ff9db5 !important; /* Darker shade of pink */
+    border-radius: 8px;
+}
+
+.category {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffb6c1 !important; /* Slightly lighter shade of pink */
+    border-radius: 8px;
+}
+
+
+
+
+.section h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.category {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffb6c1; /* Slightly lighter shade of pink */
+    border-radius: 8px;
+}
+
+.category h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.restaurant-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+.restaurant-item {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 20px;
+    background-color: #fff; /* White background for restaurant items */
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.restaurant-item h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333;
+}

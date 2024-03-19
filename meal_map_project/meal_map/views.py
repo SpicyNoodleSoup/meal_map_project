@@ -36,8 +36,6 @@ def base(request):
 
 
 def user_login(request):
-    # response = render(request, 'meal_map/login.html')
-    # return response
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -45,6 +43,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
+                if not hasattr(user, "reviewer"):
+                    Reviewer.objects.create(user=user)
                 return redirect(reverse('meal_map:homepage'))
             else:
                 return HttpResponse("Your Rango Meal Map is disabled.")
@@ -153,17 +153,18 @@ def restaurant(request, restaurant_name_slug):
         
     try:
         restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
-        reviews = Review.objects.filter(restaurant = restaurant)
+        reviews = Review.objects.filter(restaurant=restaurant)
         
         if request.method == 'POST':
             review_form = AddReviewForm(request.POST)
             if review_form.is_valid():
                 review = review_form.save(commit=False)
                 review.restaurant = restaurant
-                review.reviewer = Reviewer.objects.get(user=request.user)
-                review.date = timezone.now()
-                review.save()
-                return redirect('restaurant', restaurant_name_slug=restaurant.slug)
+                if hasattr(request.user, 'reviewer'):
+                    review.reviewer = request.user.reviewer
+                    review.date = timezone.now()
+                    review.save()
+                return redirect('meal_map:show_restaurant', restaurant_name_slug=restaurant.slug)
             
         else:
             review_form = AddReviewForm()
@@ -176,4 +177,5 @@ def restaurant(request, restaurant_name_slug):
         context_dict['reviews'] = None
         context_dict['review_form'] = AddReviewForm()
         
+    return render(request, 'meal_map/restaurant.html', context=context_dict)
     return render(request, 'meal_map/restaurant.html', context=context_dict)
