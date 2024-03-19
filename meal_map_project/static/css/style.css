@@ -3,16 +3,18 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-    
-};
+
+}
+
+;
 
 html {
-    background-color: #fdcfde; 
+    background-color: #fdcfde;
 }
 
 body {
     min-height: 100vh;
-    background-color: #fdcfde; 
+    background-color: #fdcfde;
 }
 
 .header {
@@ -34,8 +36,9 @@ body {
 }
 
 .nav-links li a {
-    margin-left: 20px; /* space */
-    color: #fff; 
+    margin-left: 20px;
+    /* space */
+    color: #fff;
 }
 
 
@@ -69,7 +72,8 @@ body {
 }
 
 .main-content {
-    margin-top: 120px; /* Adjust this value to the height of your header */
+    margin-top: 120px;
+    /* Adjust this value to the height of your header */
 }
 
 /* ... (previous CSS code) ... */
@@ -145,7 +149,7 @@ body {
     background-color: #45a049;
 }
 
-.add_restaurant-container h1{
+.add_restaurant-container h1 {
     text-align: center;
 }
 
@@ -154,12 +158,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* This ensures that your form is always centered vertically */
+    min-height: 100vh;
+    /* This ensures that your form is always centered vertically */
 }
 
 /* This styles the form itself */
 form {
-    width: 300px; 
+    width: 300px;
     margin: auto;
     padding: 20px;
 
@@ -174,9 +179,11 @@ input[type="url"],
 input[type="number"],
 textarea,
 select {
-    width: 100%; /* Makes the input take up the full width of the form */
+    width: 100%;
+    /* Makes the input take up the full width of the form */
     padding: 10px;
-    margin-bottom: 15px; /* Adds space below each input */
+    margin-bottom: 15px;
+    /* Adds space below each input */
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fdfdd0;
@@ -189,7 +196,7 @@ button {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
@@ -293,22 +300,26 @@ button:hover {
 .registration-success {
     text-align: center;
     margin-top: 20px;
-    font-size: 20px; 
-    color: #ff1493; 
-    font-weight: bold; 
+    font-size: 20px;
+    color: #ff1493;
+    font-weight: bold;
 }
 
 #formContainer .form-field label {
-    display: block; /* 使标签以块级元素显示，每个标签单独占据一行 */
-    margin-bottom: 5px; /* 添加一些底部间距，使标签与下面的输入框分隔开 */
-    font-weight: bold; /* 加粗标签文本 */
-    color: #333; /* 设置标签文本颜色 */
+    display: block;
+    /* 使标签以块级元素显示，每个标签单独占据一行 */
+    margin-bottom: 5px;
+    /* 添加一些底部间距，使标签与下面的输入框分隔开 */
+    font-weight: bold;
+    /* 加粗标签文本 */
+    color: #333;
+    /* 设置标签文本颜色 */
 }
 
 /* restaurant page */
 
 #add-review-section {
-    display:none
+    display: none
 }
 
 #restaurant-container header {
@@ -321,12 +332,16 @@ button:hover {
 }
 
 #restaurant-container {
-    display: flex; /* This will place all children in a row */
-    justify-content: space-between; /* This will add space between your main content and sidebar */
-    margin: auto; /* Centers the container */
-    max-width: 1200px; /* Or the maximum width you desire */
-    
-    
+    display: flex;
+    /* This will place all children in a row */
+    justify-content: space-between;
+    /* This will add space between your main content and sidebar */
+    margin: auto;
+    /* Centers the container */
+    max-width: 1200px;
+    /* Or the maximum width you desire */
+
+
 }
 
 #description-container {
@@ -335,11 +350,11 @@ button:hover {
 
 #restaurant-container button {
 
-    width:auto;
+    width: auto;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
@@ -347,13 +362,16 @@ button:hover {
 
 
 .main-content {
-    flex-grow: 1; /* This will make main content grow to fill the space */
-    margin-right: 20px; /* Add some margin between main content and sidebar */
-    background-color: #fdcfde; 
+    flex-grow: 1;
+    /* This will make main content grow to fill the space */
+    margin-right: 20px;
+    /* Add some margin between main content and sidebar */
+    background-color: #fdcfde;
 }
 
 .sidebar {
-    width: 200px; /* Adjust width of the sidebar */
+    width: 200px;
+    /* Adjust width of the sidebar */
     padding-top: 100px;
     /* Add other styling as needed */
 }
@@ -363,7 +381,7 @@ button:hover {
     width: 400px;
 }
 
-#add-review-section #add_review_form{
+#add-review-section #add_review_form {
     background-color: lightblue;
 }
 
@@ -378,4 +396,6 @@ button:hover {
     background-color: white;
 }
 
-
+#rating-container {
+    background-color: #fdfdd0;
+}
