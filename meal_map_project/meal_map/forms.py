@@ -37,8 +37,7 @@ class AddReviewForm(forms.ModelForm):
         review.reviewer = self.reviewer
         if commit:
             review.save()
-        return review    
-    
+        return review        
         
 class ReviewerForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
