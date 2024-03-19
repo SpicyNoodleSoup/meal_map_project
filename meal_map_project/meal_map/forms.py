@@ -45,6 +45,7 @@ class ReviewerForm(forms.ModelForm):
         user = super().save(commit=False)
         user.email = self.cleaned_data.get('email')
         if commit:
+            user.set_password(user.password)
             user.save()
             reviewer = Reviewer.objects.create(user=user)
             reviewer.profile_picture = self.cleaned_data.get('profile_picture')
@@ -70,6 +71,7 @@ class RestaurantOwnerForm(forms.ModelForm):
         user = super().save(commit=False)
         user.email = self.cleaned_data.get('email')
         if commit:
+            user.set_password(user.password)
             user.save()
             owner = RestaurantOwner.objects.create(user=user)
             owner.restaurant_name = self.cleaned_data.get('restaurant_name')
