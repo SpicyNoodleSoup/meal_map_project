@@ -12,7 +12,7 @@
             {% else %}
             <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
             {% endif %}
-            <h3>{{ restaurant.name }}</h3>
+            <a href ="{% url 'meal_map:show_restaurant' restaurant_name_slug=restaurant.slug %}"> <h3>{{ restaurant.name }}</h3></a>
         </div>
         {% endfor %}
     </div>
@@ -26,7 +26,7 @@
             {% else %}
             <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
             {% endif %}
-            <h3>{{ restaurant.name }}</h3>
+            <a href ="{% url 'meal_map:show_restaurant' restaurant_name_slug=restaurant.slug %}"><h3>{{ restaurant.name }}</h3></a>
         </div>
         {% endfor %}
     </div>
@@ -42,7 +42,7 @@
             {% else %}
             <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
             {% endif %}
-            <h3>{{ restaurant.name }}</h3>
+            <a href ="{% url 'meal_map:show_restaurant' restaurant_name_slug=restaurant.slug %}"><h3>{{ restaurant.name }}</h3></a>
         </div>
         {% endfor %}
     </div>

@@ -264,6 +264,11 @@ button:hover {
     margin-bottom: 20px;
 }
 
+.restaurant-item a {
+    text-decoration: none;
+    color: #333;
+}
+
 .restaurant-item img {
     width: 100%;
     height: auto;
