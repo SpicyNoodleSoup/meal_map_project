@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Restaurant, RestaurantOwner, Review, Reviewer
-from .forms import UserForm, UserProfileForm, AddRestaurantForm, AddReviewForm
+from .forms import AddRestaurantForm, AddReviewForm, ReviewerForm, RestaurantOwnerForm
 
 
 
@@ -111,41 +111,42 @@ def add_restaurant(request):
 def my_reviews(request):
     response = render(request, 'meal_map/my_reviews.html')
     return response
-
+        
 def register(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        if User.objects.filter(username=username).exists():
-            return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
-        
-        user = User.objects.create_user(username=username, email=email, password=password)
-        
-        login(request, user)
-        
-        return redirect('meal_map:homepage')
+        if 'register_reviewer' in request.POST:
+            reviewer_form = ReviewerForm(request.POST, request.FILES)
+            username = request.POST.get('username')
+            if User.objects.filter(username=username).exists():
+                reviewer_form = ReviewerForm()
+                restaurant_form = RestaurantOwnerForm()
+                return render(request, 'meal_map/register.html', context={'error_message': 'Username already exists', 'reviewer_form': reviewer_form, 'restaurant_form': restaurant_form,})
+            if reviewer_form.is_valid():
+                user = reviewer_form.save()
+                login(request, user)
+                return redirect('meal_map:homepage')
+            else:
+                print(reviewer_form.errors)
+        elif 'register_restaurant_owner' in request.POST:
+            restaurant_form = RestaurantOwnerForm(request.POST, request.FILES)
+            username = request.POST.get('username')
+            if User.objects.filter(username=username).exists():
+                reviewer_form = ReviewerForm()
+                restaurant_form = RestaurantOwnerForm()
+                return render(request, 'meal_map/register.html', context={'error_message': 'Username already exists', 'reviewer_form': reviewer_form, 'restaurant_form': restaurant_form,})
+            if restaurant_form.is_valid():
+                user = restaurant_form.save()
+                login(request, user)
+                return redirect('meal_map:homepage')
+            else:
+                print(restaurant_form.errors)
     else:
-        return render(request, 'meal_map/register.html')
-    
-def restaurant_register(request):
-    if request.method == 'POST':
-        restaurant_name = request.POST['restaurantName']
-        owner_name = request.POST['ownerName']
-        email = request.POST['email']
-        password = request.POST['password']
+        reviewer_form = ReviewerForm()
+        restaurant_form = RestaurantOwnerForm()
 
-        if User.objects.filter(username=owner_name).exists():
-            return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
-    
-        user = User.objects.create_user(username=owner_name, email=email, password=password)
-
-        login(request, user)
-        
-        return redirect('meal_map:homepage')
-    else:
-        return render(request, 'meal_map/restaurant_register.html')
+    return render(request, 'meal_map/register.html',
+                  context = {'reviewer_form': reviewer_form,
+                             'restaurant_form': restaurant_form,})
 
 def restaurant(request, restaurant_name_slug):
     context_dict = {}
@@ -176,5 +177,3 @@ def restaurant(request, restaurant_name_slug):
         context_dict['review_form'] = AddReviewForm()
         
     return render(request, 'meal_map/restaurant.html', context=context_dict)
-        
-        

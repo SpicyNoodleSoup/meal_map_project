@@ -1,19 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from meal_map.models import UserProfile, Restaurant, Review
-
-
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password',)
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('website', 'picture',)
+from meal_map.models import Restaurant, Review, Reviewer, RestaurantOwner
 
 class AddRestaurantForm(forms.ModelForm):
     class Meta:
@@ -41,5 +28,51 @@ class AddReviewForm(forms.ModelForm):
                    'review_text': forms.Textarea(attrs={'placeholder': 'Tell us what you thought!'}),
                    }
         
-        
+class ReviewerForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    profile_picture = forms.ImageField(widget=forms.FileInput(), required=False)
     
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "email",
+            "password",
+            "profile_picture"
+        )
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data.get('email')
+        if commit:
+            user.save()
+            reviewer = Reviewer.objects.create(user=user)
+            reviewer.profile_picture = self.cleaned_data.get('profile_picture')
+            reviewer.save()
+        return user
+
+class RestaurantOwnerForm(forms.ModelForm):
+    restaurant_name = forms.CharField(max_length=128, required=True)
+    password = forms.CharField(widget=forms.PasswordInput())
+    profile_picture = forms.ImageField(widget=forms.FileInput(), required=False)
+    
+    class Meta:
+        model = User
+        fields = (
+            "restaurant_name",
+            "username",
+            "email",
+            "password",
+            "profile_picture"
+        )
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data.get('email')
+        if commit:
+            user.save()
+            owner = RestaurantOwner.objects.create(user=user)
+            owner.restaurant_name = self.cleaned_data.get('restaurant_name')
+            owner.profile_picture = self.cleaned_data.get('profile_picture')
+            owner.save()
+        return user

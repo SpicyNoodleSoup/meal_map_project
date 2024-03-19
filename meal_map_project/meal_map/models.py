@@ -12,7 +12,7 @@ numeric = RegexValidator(r'^[0-9]+$', 'Only numeric characters are allowed.')
 
 class Reviewer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reviewer")
-    profile_picture = models.ImageField(upload_to="reviewer_pics")
+    profile_picture = models.ImageField(upload_to="reviewer_pics", blank=True)
 
     class Meta:
         verbose_name_plural = "Reviewers"
@@ -22,10 +22,14 @@ class Reviewer(models.Model):
 
 class RestaurantOwner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="restaurant_owner")
-    profile_picture = models.ImageField(upload_to="owner_pics")
+    restaurant_name = models.CharField(max_length=128, default="Your Restaurant")
+    profile_picture = models.ImageField(upload_to="owner_pics", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Restaurant Owners"
 
     def __str__(self):
-        return self.user.username
+        return self.restaurant_name
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=128)
@@ -56,12 +60,3 @@ class Review(models.Model):
 
     def __str__(self):
         return _("Review by {} on {}").format(self.reviewer, self.date)
-
-## URL + images
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    def __str__(self):
-        return self.user.username
-    

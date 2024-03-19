@@ -14,22 +14,17 @@ Register
         <button id="restaurantBtn">Restaurant</button>
     </div>
     <div id="formContainer">
-        <form id="reviewerForm" style="display: none;" action="{% url 'meal_map:register' %}" method="post">
+        <form id="reviewerForm" style="display: none;" action="{% url 'meal_map:register' %}" method="post" enctype="multipart/form-data" name="register_reviewer">
             {% csrf_token %}
             <!-- Reviewer form fields -->
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Register as Reviewer">
+            {{ reviewer_form.as_p }}
+            <input type="submit" value="Register as Reviewer" name="register_reviewer">
         </form>
-        <form id="restaurantForm" style="display: none;" action="{% url 'meal_map:restaurant_register' %}" method="post">
+        <form id="restaurantForm" style="display: none;" action="{% url 'meal_map:register' %}" method="post" enctype="multipart/form-data" name="register_restaurant_owner">
             {% csrf_token %}
-            <!-- Restaurant form fields -->
-            <input type="text" name="restaurantName" placeholder="Restaurant Name" required>
-            <input type="text" name="ownerName" placeholder="Owner Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Register as Restaurant">
+             <!-- Restaurant form fields -->
+            {{ restaurant_form.as_p }} <!-- Render the fields for the restaurant owner form -->
+            <input type="submit" value="Register as Restaurant Owner" name="register_restaurant_owner">
         </form>
     </div>
     <div id="error-message">
