@@ -122,7 +122,8 @@ def register(request):
             return render(request, 'meal_map/register.html', {'error_message': 'Username already exists'})
         
         user = User.objects.create_user(username=username, email=email, password=password)
-        user.objects.create(user=user)
+        Reviewer.objects.create(user=user)
+
         
         login(request, user)
         
