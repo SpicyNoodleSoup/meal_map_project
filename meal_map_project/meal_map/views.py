@@ -82,9 +82,21 @@ def homepage(request):
     
     return render(request, 'meal_map/homepage.html', context)
 
+@login_required
 def my_account(request):
-    response = render(request, 'meal_map/account.html')
-    return response
+    try:
+        reviewer_instance = request.user.reviewer
+    except Reviewer.DoesNotExist:
+        reviewer_instance = Reviewer.objects.create(user=request.user)
+
+    recent_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')[:2]
+    all_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')
+
+    return render(request, 'meal_map/account.html', {
+        'recent_reviews': recent_reviews,
+        'all_reviews': all_reviews,
+    })
+
 
 @login_required
 def add_restaurant(request):
@@ -178,4 +190,18 @@ def restaurant(request, restaurant_name_slug):
         context_dict['review_form'] = AddReviewForm()
         
     return render(request, 'meal_map/restaurant.html', context=context_dict)
-    return render(request, 'meal_map/restaurant.html', context=context_dict)
+    
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        user = request.user
+        user.username = username
+        user.email = email
+        user.save()
+        return redirect('my_account')  # 重定向到账户页面
+    else:
+        return redirect('my_account')  # 如果不是POST请求，重定向到账户页面
+
+

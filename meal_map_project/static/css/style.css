@@ -216,6 +216,7 @@ button:hover {
 .login-container h1 {
     color: #333;
     margin-bottom: 20px;
+    margin-left: 40px;
 }
 
 .login-container form {
@@ -499,4 +500,119 @@ button:hover {
     margin-top: 10px;
     font-size: 18px;
     color: #333;
+}
+
+.restaurant-rating {
+    font-size: 16px;
+    color: #ff1493; /* This can be any color that fits your design */
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.restaurant-item .restaurant-rating {
+    background-color: #fdfdd0; /* a light background */
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 8px; /* space between the restaurant name and the rating */
+}
+
+.profile-picture {
+    display: block;  
+    width: 150px;  
+    height: 150px;  
+    border-radius: 50%;  
+    object-fit: cover;  
+    margin: 0 auto 20px;  
+}
+
+.account-container {
+    display: flex;
+    justify-content: space-around; /* 确保两边的空间相等，元素分散排列 */
+    background-color: #fdcfde;
+    padding: 20px;
+    max-width: 900px; /* 或者您想要的宽度 */
+    margin: 0 auto; /* 居中显示 */
+}
+
+.profile-section {
+    width: 45%;
+    align-items: flex-start;
+    padding: 10px;
+    text-align: left;
+}
+
+.reviews-section {
+    width: 45%;
+    padding: 10px;
+    text-align: left;
+    margin-top: 50px;
+}
+
+
+.profile-attributes,
+.review {
+    background-color: #fff; 
+    padding: 15px;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    margin-bottom: 10px; 
+}
+
+.profile-attributes label {
+    margin-bottom: 5px;
+}
+
+.profile-attributes input[type="text"] {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.update-profile-btn {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.reviews-section {
+    width: 45%;
+}
+
+.review {
+    max-width: calc(100% - 20px); 
+}
+
+.reviewer-name {
+    font-weight: bold;
+}
+
+.review-rating {
+    float: right;
+    background-color: #4CAF50;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.review-text {
+    clear: both;
+}
+
+.view-all-reviews-btn {
+    padding: 10px 15px;
+    background-color: #ffc107; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block; 
+    width: 95%; 
+    text-align: center;
 }
