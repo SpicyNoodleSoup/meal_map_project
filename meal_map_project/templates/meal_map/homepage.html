@@ -16,7 +16,7 @@
                 <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
                 {% endif %}
                 <h3>{{ restaurant.name }}</h3>
-                <p class="restaurant-rating">Rating: {{ restaurant.rating | default:"Not Rated" }}</p>
+                <div class="restaurant-rating">{{ restaurant.average_rating|floatformat:1 }}</div>
             </div>
             {% endfor %}
         </div>
@@ -35,7 +35,7 @@
                 <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
                 {% endif %}
                 <h3>{{ restaurant.name }}</h3>
-                <p class="restaurant-rating">Rating: {{ restaurant.rating | default:"Not Rated" }}</p>
+                <div class="restaurant-rating">{{ restaurant.average_rating|floatformat:1 }}</div>
             </div>
             {% endfor %}
         </div>
@@ -57,7 +57,7 @@
                     <img src="{% static 'images/placeholder.jpg' %}" alt="Default Image">
                     {% endif %}
                     <h3>{{ restaurant.name }}</h3>
-                    <p class="restaurant-rating">Rating: {{ restaurant.rating | default:"Not Rated" }}</p>
+                    <div class="restaurant-rating">{{ restaurant.average_rating|floatformat:1 }}</div>
                 </div>
                 {% endfor %}
             </div>

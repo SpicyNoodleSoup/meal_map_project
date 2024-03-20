@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Restaurant, RestaurantOwner, Review, Reviewer
 from .forms import AddRestaurantForm, AddReviewForm, ReviewerForm, RestaurantOwnerForm
+from django.db.models import Avg
 
 
 
@@ -60,7 +61,10 @@ def user_logout(request):
     return redirect('meal_map:homepage')
 
 def homepage(request):
-    top_restaurants = Restaurant.objects.order_by('-rating')[:15]  # Get top 15 restaurants by rating
+    top_restaurants = Restaurant.objects.annotate(
+        average_rating=Avg('reviews__rating')
+    ).order_by('-average_rating')[:15]  # Get top 15 restaurants by rating
+
     new_restaurants = Restaurant.objects.order_by('-id')[:15]
 
     categories = ['Desserts', 'Bryans Steak', 'Vietnamese', 'Thai', 'Spanish', 'Soul Food', 'Seafood',
@@ -175,6 +179,7 @@ def restaurant(request, restaurant_name_slug):
     try:
         restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
         reviews = Review.objects.filter(restaurant=restaurant)
+        average_rating = restaurant.calculate_rating()
         
         if request.method == 'POST':
             review_form = AddReviewForm(request.POST)
@@ -193,6 +198,7 @@ def restaurant(request, restaurant_name_slug):
         context_dict['restaurant'] = restaurant
         context_dict['reviews'] = reviews
         context_dict['review_form'] = review_form
+        context_dict['average_rating'] = average_rating
     except Restaurant.DoesNotExist:
         context_dict['restaurant'] = None
         context_dict['reviews'] = None

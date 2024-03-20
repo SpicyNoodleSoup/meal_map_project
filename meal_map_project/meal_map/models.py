@@ -43,6 +43,14 @@ class Restaurant(models.Model):
     photo = models.ImageField(upload_to="restaurant_photos/")
     owner = models.OneToOneField(RestaurantOwner, on_delete=models.CASCADE, related_name='restaurant')
     slug = models.SlugField(unique=True, default='default-slug')
+ 
+    def calculate_rating(self):
+        reviews = self.reviews.all()
+        if reviews:
+            total_rating = sum(review.rating for review in reviews)
+            average_rating = total_rating / len(reviews)
+            return round(average_rating, 1)
+        return 0.0
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
