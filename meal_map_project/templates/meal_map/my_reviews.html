@@ -5,7 +5,23 @@
     My Reviews
 {% endblock %}
 
-
-{% block content%}
-    Still to do...
-{% endblock%}
+{% block content %}
+<div class="my-reviews-container">
+    <h1>My Reviews</h1>
+    {% if all_reviews %}
+    <ul class="review-list">
+        {% for review in all_reviews %}
+        <li class="review-item">
+            <div class="review-content">
+                <span class="restaurant-name">{{ review.restaurant.name }}</span>
+                <span class="review-rating">{{ review.rating }}</span>
+                <p class="review-text">{{ review.review_text }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No reviews found.</p>
+    {% endif %}
+</div>
+{% endblock %}
