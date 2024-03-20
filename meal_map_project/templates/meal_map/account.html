@@ -5,85 +5,63 @@
 Account
 {% endblock %}
 
-
 {% block content %}
 <div class="account-container">
     <div class="profile-section">
-
         {% if request.user.reviewer.profile_picture %}
         <img src="{{ request.user.reviewer.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+        {% elif request.user.restaurant_owner.profile_picture %}
+        <img src="{{ request.user.restaurant_owner.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
         {% else %}
         <img src="{% static 'images/default-profile.jpg' %}" alt="Profile Picture" class="profile-picture">
         {% endif %}
 
         <div class="profile-attributes">
-            <form action="{% url 'meal_map:update_profile' %}" method="post"></form>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" value="{{ request.user.username }}"><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{ request.user.email }}"><br>
-            <input type="submit" value="Update Profile" class="update-profile-btn">
+            <form action="{% url 'meal_map:update_profile' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ request.user.username }}"><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ request.user.email }}"><br>
+                <label for="profile_picture">Profile Picture:</label>
+                <input type="file" id="profile_picture" name="profile_picture"><br>
+                <input type="submit" value="Update Profile" class="update-profile-btn">
+            </form>
         </div>
     </div>
+
 
     <div class="reviews-section">
-
-        <h1>Reviews</h1>
-        <button id="toggleButton" class="view-all-reviews-btn">All Reviews</button>
-
-        <div id="recentReviews" style="display: none;">
-            <h2>Recent Reviews</h2>
-            {% if recent_reviews %}
-            <ul>
-                {% for review in recent_reviews %}
-                <li class="review">
-                    <span class="reviewer-name">{{ review.reviewer.user.username }}</span>
-                    <span class="review-rating">{{ review.rating }}</span>
-                    <p class="review-text">{{ review.review_text }}</p>
-                </li>
-                {% endfor %}
-            </ul>
+        {% if request.user.restaurant_owner %}
+            <h1>Restaurant Owner</h1>
+            {% if request.user.restaurant_owner.restaurant %}
+                <a href="{% url 'meal_map:show_restaurant' request.user.restaurant_owner.restaurant.slug %}" class="btn view-restaurant-btn">View My Restaurant</a>
             {% else %}
-            <p>No recent reviews found.</p>
+                <a href="{% url 'meal_map:add_restaurant' %}" class="btn add-restaurant-btn">Add Restaurant</a>
             {% endif %}
-        </div>
+        {% else %}
+            <h1>Reviews</h1>
+            <a href="{% url 'meal_map:my_reviews' %}" class="btn view-all-reviews-btn">All Reviews</a>
 
-        <div id="allReviews" style="display: none;">
-            <h2>All Reviews</h2>
-            {% if all_reviews %}
-            <ul>
-                {% for review in all_reviews %}
-                <li class="review">
-                    <span class="reviewer-name">{{ review.reviewer.user.username }}</span>
-                    <span class="review-rating">{{ review.rating }}</span>
-                    <p class="review-text">{{ review.review_text }}</p>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No reviews found.</p>
-            {% endif %}
-        </div>
-
-
+            <div class="recent-reviews">
+                <h2>Recent Reviews</h2>
+                {% if recent_reviews %}
+                <ul class="review-list">
+                    {% for review in recent_reviews %}
+                    <li class="review-item">
+                        <div class="review-content">
+                            <span class="reviewer-name">{{ review.reviewer.user.username }}</span>
+                            <span class="review-rating">{{ review.rating }}</span>
+                            <p class="review-text">{{ review.review_text }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No recent reviews found.</p>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
-
-
-    {% endblock %}
-
-    {% block scripts %}
-    <script>
-        document.getElementById('toggleButton').addEventListener('click', function () {
-            var recentReviews = document.getElementById('recentReviews');
-            var allReviews = document.getElementById('allReviews');
-
-            if (recentReviews.style.display === 'none') {
-                recentReviews.style.display = 'block';
-                allReviews.style.display = 'none';
-            } else {
-                recentReviews.style.display = 'none';
-                allReviews.style.display = 'block';
-            }
-        });
-    </script>
-    {% endblock %}
+</div>
+{% endblock %}

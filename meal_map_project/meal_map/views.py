@@ -86,16 +86,16 @@ def homepage(request):
 def my_account(request):
     try:
         reviewer_instance = request.user.reviewer
+        recent_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')[:2]
+        all_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')
+        context = {
+            'recent_reviews': recent_reviews,
+            'all_reviews': all_reviews,
+        }
     except Reviewer.DoesNotExist:
-        reviewer_instance = Reviewer.objects.create(user=request.user)
+        context = {}
 
-    recent_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')[:2]
-    all_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')
-
-    return render(request, 'meal_map/account.html', {
-        'recent_reviews': recent_reviews,
-        'all_reviews': all_reviews,
-    })
+    return render(request, 'meal_map/account.html', context)
 
 
 @login_required
@@ -120,9 +120,18 @@ def add_restaurant(request):
     return render(request,'meal_map/add_restaurant.html', {'form':form})
     
 
+@login_required
 def my_reviews(request):
-    response = render(request, 'meal_map/my_reviews.html')
-    return response
+    try:
+        reviewer_instance = request.user.reviewer
+        all_reviews = Review.objects.filter(reviewer=reviewer_instance).order_by('-date')
+        context = {
+            'all_reviews': all_reviews,
+        }
+    except Reviewer.DoesNotExist:
+        context = {}
+
+    return render(request, 'meal_map/my_reviews.html', context)
         
 def register(request):
     if request.method == 'POST':
@@ -196,12 +205,26 @@ def update_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
+        profile_picture = request.FILES.get('profile_picture')
+        
         user = request.user
         user.username = username
         user.email = email
         user.save()
-        return redirect('my_account')  # 重定向到账户页面
+        
+        if hasattr(user, 'reviewer'):
+            reviewer = user.reviewer
+            if profile_picture:
+                reviewer.profile_picture = profile_picture
+                reviewer.save()
+        elif hasattr(user, 'restaurant_owner'):
+            restaurant_owner = user.restaurant_owner
+            if profile_picture:
+                restaurant_owner.profile_picture = profile_picture
+                restaurant_owner.save()
+        
+        return redirect('meal_map:my_account')
     else:
-        return redirect('my_account')  # 如果不是POST请求，重定向到账户页面
+        return redirect('meal_map:my_account')
 
 
