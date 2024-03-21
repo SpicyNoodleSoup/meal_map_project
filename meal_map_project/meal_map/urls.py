@@ -7,8 +7,8 @@ app_name = 'meal_map'
 
 urlpatterns = [
     
-    path('restaurants/', views.RestaurantListView, name='restaurant-list'),
-    path('restaurants/<int:pk>/', views.RestaurantDetailView, name='restaurant-detail'),
+    path('restaurants/', views.RestaurantListView.as_view(), name='restaurant-list'),
+    path('restaurants/<int:pk>/', views.RestaurantDetailView.as_view(), name='restaurant-detail'),
     
     path('base/', views.base, name ='base'),
     path('register/', views.register, name ='register'),
