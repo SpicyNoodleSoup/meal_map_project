@@ -523,11 +523,11 @@ button:hover {
 
 .account-container {
     display: flex;
-    justify-content: space-around; /* 确保两边的空间相等，元素分散排列 */
+    justify-content: space-around; 
     background-color: #fdcfde;
     padding: 20px;
-    max-width: 900px; /* 或者您想要的宽度 */
-    margin: 0 auto; /* 居中显示 */
+    max-width: 900px; 
+    margin: 0 auto; 
 }
 
 .profile-section {

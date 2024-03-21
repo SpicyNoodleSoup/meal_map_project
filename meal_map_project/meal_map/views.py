@@ -65,17 +65,18 @@ def homepage(request):
         average_rating=Avg('reviews__rating')
     ).order_by('-average_rating')[:15]  # Get top 15 restaurants by rating
 
-    new_restaurants = Restaurant.objects.order_by('-id')[:15]
+    new_restaurants = Restaurant.objects.annotate(average_rating=Avg('reviews__rating')).order_by('-id')[:15]
 
-    categories = ['Desserts', 'Bryans Steak', 'Vietnamese', 'Thai', 'Spanish', 'Soul Food', 'Seafood',
-                  'Sandwiches', 'Salad', 'Pizza', 'Mexican', 'Italian', 'Indian', 'Healthy Food', 'Greek',
-                  'German', 'French', 'Fast Food', 'Exotic', 'Ethiopian', 'European', 'Eastern European',
+    categories = ['Desserts', 'Bryans Steak', 'Vietnamese', 'Thai', 'Spanish', 'Japanese', 'Seafood',
+                  'Sandwiches', 'Salad', 'Pizza', 'Mexican', 'American', 'Italian', 'Indian', 'Vegan', 
+                  'Greek','German', 'French', 'Fast Food', 'Exotic', 'Ethiopian', 'European', 'Eastern European',
                   'Diner', 'Cuban', 'Coffee and Tea', 'Chinese', 'Caribbean', 'Burgers', 'Breakfast',
                   'Bar Food', 'Bakery', 'Barbeque']
     
     category_restaurants = {}
     for category in categories:
-        restaurants = Restaurant.objects.filter(food_type__icontains=category).order_by('-rating')[:15]
+        restaurants = Restaurant.objects.filter(food_type__icontains=category).annotate(
+            average_rating=Avg('reviews__rating')).order_by('-average_rating')[:15]
         category_restaurants[category] = restaurants
     
     context = {
