@@ -51,7 +51,7 @@ Account
                     <li class="review-item">
                         <div class="review-content">
                             <span class="reviewer-name">{{ review.reviewer.user.username }}</span>
-                            <span class="review-restaurant"> {{ review.restaurant.name}}</span>
+                            <span class="review-restaurant"> <a style="text-decoration: none;" href="{% url 'meal_map:show_restaurant' restaurant_name_slug=review.restaurant.slug %}">{{review.restaurant.name}}</a></span> 
                             <span class="review-rating">{{ review.rating }}</span>
                             <p class="review-text">{{ review.review_text }}</p>
                         </div>

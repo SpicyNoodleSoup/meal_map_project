@@ -654,6 +654,10 @@ button:hover {
     padding: 0;
 }
 
+.review-list .review-restaurant {
+    text-decoration: none;
+}
+
 .review-item {
     margin-bottom: 20px;
     padding: 20px;
