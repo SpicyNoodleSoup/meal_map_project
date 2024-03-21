@@ -8,6 +8,15 @@ Login
 {% block content %}
 <div class="login-container">
     <h1>Login to MealMap</h1>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
     <form id="loginForm" method="post" action="{% url 'meal_map:login' %}">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Username" required>

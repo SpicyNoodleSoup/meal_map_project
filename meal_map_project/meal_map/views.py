@@ -48,10 +48,11 @@ def user_login(request):
                     Reviewer.objects.create(user=user)
                 return redirect(reverse('meal_map:homepage'))
             else:
-                return HttpResponse("Your Rango Meal Map is disabled.")
+                messages.error(request, "Your Rango Meal Map is disabled.")
+                return redirect('meal_map:login')  # Use your login view's URL name here
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            messages.error(request, "Invalid login details supplied.")
+            return redirect('meal_map:login')  # Use your login view's URL name here
     else:
         return render(request, 'meal_map/login.html')
 
