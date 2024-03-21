@@ -13,7 +13,7 @@
         {% for review in all_reviews %}
         <li class="review-item">
             <div class="review-content">
-                <span class="restaurant-name">{{ review.restaurant.name }}</span>
+                <span class="restaurant-name"><a style="text-decoration: none;" href="{% url 'meal_map:show_restaurant' restaurant_name_slug=review.restaurant.slug %}">{{ review.restaurant.name }}</a></span>
                 <span class="review-rating">{{ review.rating }}</span>
                 <p class="review-text">{{ review.review_text }}</p>
             </div>
