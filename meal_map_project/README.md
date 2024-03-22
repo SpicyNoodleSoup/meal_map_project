@@ -27,8 +27,15 @@ Luke Latta 2787729L
 Xiaoshi Chen 2742059C
 Olivia Long 2774536L
 Aidan Yip 2789553Y
+
 GitHub URL for the app: https://github.com/WADteam10a/meal_map_project
 PythonAnywhere URL for the app: https://abdisalamabuker.pythonanywhere.com/
-Git Clone the repository (inside of a directory of your choice), cd into meal_map_project and then cd
-into meal_map_project again, pip install -r requirements.txt, python manage.py makemigrations,
-python manage.py migrate, python populate_meal_map.py, python manage.py runserver
+
+Instructions for deploying Meal Map on computer:
+git clone https://github.com/WADteam10a/meal_map_project.git (inside a directory of your choice)
+cd meal_map_project/meal_map_project
+pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python populate_meal_map.py
+python manage.py runserver
