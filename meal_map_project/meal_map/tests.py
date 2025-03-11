@@ -12,7 +12,7 @@ FAILURE_FOOTER = f"{os.linesep}"
 
 class UserLoginTestCase(TestCase):
     def setUp(self):
-        # Set up test users haha
+        # Set up test users 
         self.user = User.objects.create_user(username='testuser', password='testpass123')
         self.inactive_user = User.objects.create_user(username='inactiveuser', password='testpass123', is_active=False)
 
